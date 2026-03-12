@@ -17,7 +17,12 @@ const seedAdmin = require('./seed');
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: true, // Reflect request origin
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
+}));
 
 // MongoDB Connection logic
 const dbUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/ricemill';
