@@ -19,7 +19,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/ricemill')
+// MongoDB Connection logic
+const dbUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/ricemill';
+// Cloud MongoDB (Atlas) strings starting with mongodb+srv cannot have port numbers like :27017
+const sanitizedUri = dbUri.startsWith('mongodb+srv') ? dbUri.replace(/:\d+/, '') : dbUri;
+
+mongoose.connect(sanitizedUri)
   .then(async () => {
     console.log('MongoDB Connected');
     await seedAdmin(); // Auto-seed admin on every startup
