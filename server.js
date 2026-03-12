@@ -12,6 +12,7 @@ const stockRoutes = require('./routes/stock');
 const expensesRoutes = require('./routes/expenses');
 const reportsRoutes = require('./routes/reports');
 const walletRoutes = require('./routes/wallet');
+const seedAdmin = require('./seed');
 
 const app = express();
 
@@ -19,7 +20,10 @@ app.use(express.json());
 app.use(cors());
 
 mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/ricemill')
-  .then(() => console.log('MongoDB Connected'))
+  .then(async () => {
+    console.log('MongoDB Connected');
+    await seedAdmin(); // Auto-seed admin on every startup
+  })
   .catch(err => console.error('MongoDB connection error:', err));
 
 // Mount routes
