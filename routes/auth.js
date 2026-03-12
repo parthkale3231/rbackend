@@ -52,7 +52,7 @@ const { protect } = require('../middleware/authMiddleware');
 // @desc    Update user profile
 // @access  Private
 router.put('/profile', protect, async (req, res) => {
-  const user = await User.findById(req.user._id);
+  const user = req.user;
 
   if (user) {
     user.username = req.body.username || user.username;
