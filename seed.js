@@ -4,10 +4,17 @@ const User = require('./models/User');
 
 const seedAdmin = async () => {
   try {
-    const userExists = await User.findOne({ username: 'admin' });
-    if (!userExists) {
-      await User.create({ username: 'parth123', password: 'parth@1321', role: 'admin' });
-      console.log('✅ Admin user "admin" created with password "password123".');
+    const adminUsername = process.env.ADMIN_USERNAME || 'admin';
+    const adminPassword = process.env.ADMIN_PASSWORD || 'password123';
+
+    const adminExists = await User.findOne({ role: 'admin' });
+    if (!adminExists) {
+      await User.create({ 
+        username: adminUsername, 
+        password: adminPassword, 
+        role: 'admin' 
+      });
+      console.log(`✅ Admin user "${adminUsername}" created.`);
     } else {
       console.log('⚡ Admin user already exists.');
     }
